@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Anh Tuấn &amp; Yến Nhi · Thiệp Cưới</title>
+  <meta name="description" content="Trân trọng kính mời bạn đến chung vui trong ngày trọng đại của chúng mình." />
+  <meta name="theme-color" content="#F7F2EC" />
+
+  <!-- Ảnh + tiêu đề hiện ra khi gửi link qua Zalo / Messenger / Facebook.
+       📷 images/og-cover.jpg — ảnh NGANG 1200x630px, ảnh cưới 2 người rõ mặt, dung lượng < 1MB.
+       ⚠️ Sau khi đưa web lên mạng, đổi content thành đường dẫn đầy đủ,
+          vd: https://ten-mien-cua-ban.com/images/og-cover.jpg -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Anh Tuấn &amp; Yến Nhi · Save the date 06.12.2026" />
+  <meta property="og:description" content="Trân trọng kính mời bạn đến chung vui trong ngày trọng đại của chúng mình." />
+  <meta property="og:image" content="images/og-cover.jpg" />
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💍</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Great+Vibes&display=swap" rel="stylesheet" />
+  <!-- ?v=3: đổi số này mỗi khi sửa CSS/JS để trình duyệt khách không dùng bản cũ trong cache -->
+  <link rel="stylesheet" href="css/style.css?v=3" />
+</head>
+
+<body class="is-locked">
+
+  <!-- =============================================================
+       0. MÀN HÌNH MỞ THIỆP
+       Thêm ?to=Tên khách vào cuối link để hiện lời mời riêng,
+       vd: index.html?to=Anh%20Minh%20%26%20Chị%20Lan
+       ============================================================= -->
+  <div class="opening" id="opening" role="dialog" aria-label="Mở thiệp cưới">
+    <!-- 📷 Nền màn hình này dùng lại images/hero-mobile.jpg (tự làm mờ bằng CSS), không cần ảnh riêng -->
+    <img class="opening__bg" src="images/khieu-vu.jpg" alt="" />
+    <div class="opening__veil"></div>
+
+    <div class="opening__card">
+      <p class="eyebrow eyebrow--light">The Wedding Of</p>
+      <div class="monogram" aria-hidden="true">
+        <span data-cfg="monogram.0">T</span><em>&amp;</em><span data-cfg="monogram.1">A</span>
+      </div>
+      <h1 class="opening__names">
+        <span data-cfg="groom.short">Tuấn</span> <em>&amp;</em> <span data-cfg="bride.short">Ngọc Anh</span>
+      </h1>
+      <p class="opening__date" data-cfg="dateDots">20 · 12 · 2026</p>
+
+      <div class="opening__guest" id="guestBox" hidden>
+        <span>Trân trọng kính mời</span>
+        <strong id="guestName"></strong>
+      </div>
+
+      <button class="btn btn--light btn--pulse" id="openBtn" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+        Mở thiệp
+      </button>
+    </div>
+  </div>
+
+  <canvas id="petals" aria-hidden="true"></canvas>
+
+  <!-- Thanh menu nổi (hiện ra khi cuộn qua ảnh bìa) -->
+  <nav class="nav" id="nav" aria-label="Điều hướng">
+    <a href="#home" class="nav__logo"><span data-cfg="monogram.0">T</span><em>&amp;</em><span data-cfg="monogram.1">A</span></a>
+    <ul class="nav__links">
+      <li><a href="#couple">Cặp đôi</a></li>
+      <li><a href="#story">Chuyện tình</a></li>
+      <li><a href="#events">Sự kiện</a></li>
+      <li><a href="#album">Album</a></li>
+      <li><a href="#rsvp">Xác nhận</a></li>
+      <li><a href="#gift">Mừng cưới</a></li>
+    </ul>
+  </nav>
+
+  <!-- =============================================================
+       1. ẢNH BÌA (HERO)
+       ============================================================= -->
+  <header class="hero" id="home">
+    <!-- 📷 ẢNH BÌA — slide chạy ngang vô tận.
+         Danh sách ảnh khai báo ở js/config.js → mục heroSlides (thêm bao nhiêu ảnh tùy ý),
+         ảnh được JS tự chèn vào khung bên dưới, không cần sửa HTML.
+         Mẹo: chọn ảnh có nửa dưới thoáng / hơi tối để tên cô dâu chú rể nổi rõ. -->
+    <div class="hero__media" id="heroMedia"></div>
+    <div class="hero__shade"></div>
+
+    <div class="hero__content">
+      <p class="eyebrow eyebrow--light hero__in" style="--d:.5s">Save the Date</p>
+      <h2 class="hero__names hero__in" style="--d:.7s">
+        <span data-cfg="groom.short">Tuấn</span><em>&amp;</em><span data-cfg="bride.short">Ngọc Anh</span>
+      </h2>
+      <p class="hero__date hero__in" style="--d:.9s" data-cfg="dateDots">20 · 12 · 2026</p>
+      <p class="hero__place hero__in" style="--d:1s" data-cfg="city">Hà Nội</p>
+    </div>
+    <div class="hero__progress" id="heroProgress" aria-hidden="true" hidden>
+      <span data-current>01</span><i><b></b></i><span data-total>01</span>
+    </div>
+    <a href="#invite" class="hero__scroll" aria-label="Cuộn xuống"><span></span></a>
+  </header>
+
+  <main>
+    <!-- =============================================================
+         2. LỜI MỜI + ĐẾM NGƯỢC
+         ============================================================= -->
+    <section class="section invite" id="invite">
+      <div class="container narrow center">
+        <p class="verse reveal">
+          “Yêu nhau không phải là nhìn nhau,<br />mà là cùng nhau nhìn về một hướng.”
+          <span>Antoine de Saint-Exupéry</span>
+        </p>
+
+        <div class="ornament reveal"><span></span></div>
+
+        <div class="families reveal">
+          <div class="family">
+            <p class="eyebrow">Nhà Trai</p>
+            <p class="family__parent">Ông <span data-cfg="groom.father"></span></p>
+            <p class="family__parent">Bà <span data-cfg="groom.mother"></span></p>
+            <p class="family__addr" data-cfg="groom.address"></p>
+          </div>
+          <div class="family">
+            <p class="eyebrow">Nhà Gái</p>
+            <p class="family__parent">Ông <span data-cfg="bride.father"></span></p>
+            <p class="family__parent">Bà <span data-cfg="bride.mother"></span></p>
+            <p class="family__addr" data-cfg="bride.address"></p>
+          </div>
+        </div>
+
+        <p class="invite__lead reveal">Trân trọng báo tin lễ thành hôn của con chúng tôi</p>
+
+        <div class="invite__couple reveal">
+          <div>
+            <h3 data-cfg="groom.full"></h3>
+            <p data-cfg="groom.role"></p>
+          </div>
+          <span class="amp" aria-hidden="true">&amp;</span>
+          <div>
+            <h3 data-cfg="bride.full"></h3>
+            <p data-cfg="bride.role"></p>
+          </div>
+        </div>
+
+        <div class="when reveal">
+          <p class="when__label">Hôn lễ được cử hành vào lúc <b data-cfg="time"></b></p>
+          <div class="when__row">
+            <span data-cfg="weekday"></span>
+            <strong data-cfg="day"></strong>
+            <span data-cfg="monthText"></span>
+          </div>
+          <p class="when__year" data-cfg="year"></p>
+          <p class="when__lunar" data-cfg="lunar"></p>
+        </div>
+
+        <p class="invite__guest reveal" id="inviteGuest" hidden>
+          Sự hiện diện của <strong></strong> là niềm vinh hạnh cho gia đình chúng tôi.
+        </p>
+
+        <div class="countdown reveal" id="countdown" aria-label="Đếm ngược đến ngày cưới">
+          <div><b data-cd="d">00</b><span>Ngày</span></div>
+          <div><b data-cd="h">00</b><span>Giờ</span></div>
+          <div><b data-cd="m">00</b><span>Phút</span></div>
+          <div><b data-cd="s">00</b><span>Giây</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================================
+         3. CÔ DÂU & CHÚ RỂ
+         ============================================================= -->
+    <section class="section couple" id="couple">
+      <div class="container">
+        <header class="sec-head reveal">
+          <p class="eyebrow">Bride &amp; Groom</p>
+          <h2 class="sec-title">Chú rể <em>&amp;</em> Cô dâu</h2>
+        </header>
+
+        <div class="couple__grid">
+          <article class="person reveal">
+            <div class="arch-wrap">
+              <div class="arch" data-ph>
+                <!-- 📷 images/groom.jpg — Ảnh chân dung CHÚ RỂ, ảnh DỌC 3:4 (~900x1200px).
+                     Chụp nửa người, mặt nằm ở 1/3 phía trên ảnh (khung có đỉnh bo tròn hình vòm). -->
+                <img src="images/groom.jpg" alt="Chú rể" loading="lazy" />
+              </div>
+            </div>
+            <p class="eyebrow">Chú rể</p>
+            <h3 class="person__name" data-cfg="groom.full"></h3>
+            <p class="person__bio" data-cfg="groom.bio"></p>
+          </article>
+
+          <div class="couple__amp" aria-hidden="true">&amp;</div>
+
+          <article class="person person--bride reveal">
+            <div class="arch-wrap">
+              <div class="arch" data-ph>
+                <!-- 📷 images/bride.jpg — Ảnh chân dung CÔ DÂU, ảnh DỌC 3:4 (~900x1200px).
+                     Nên cùng tông màu / cùng buổi chụp với ảnh chú rể để 2 khung trông đồng bộ. -->
+                <img src="images/bride.jpg" alt="Cô dâu" loading="lazy" />
+              </div>
+            </div>
+            <p class="eyebrow">Cô dâu</p>
+            <h3 class="person__name" data-cfg="bride.full"></h3>
+            <p class="person__bio" data-cfg="bride.bio"></p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================================
+         4. CHUYỆN TÌNH YÊU (sửa trực tiếp ngày, tiêu đề, nội dung ở đây)
+         ============================================================= -->
+    <section class="section story" id="story">
+      <div class="container">
+        <header class="sec-head reveal">
+          <p class="eyebrow">Our Love Story</p>
+          <h2 class="sec-title">Chuyện <em>chúng mình</em></h2>
+        </header>
+
+        <ol class="timeline">
+          <li class="tl reveal">
+            <div class="tl__media" data-ph>
+              <!-- 📷 images/story-1.jpg — Ảnh thời MỚI QUEN / ảnh cũ lâu nhất của 2 người. Ảnh DỌC 4:5 (~1000x1250px) -->
+              <img src="images/story-1.jpg" alt="Lần đầu gặp gỡ" loading="lazy" />
+            </div>
+            <div class="tl__body">
+              <span class="tl__date">Mùa thu 2019</span>
+              <h3>Lần đầu gặp gỡ</h3>
+              <p>Một buổi chiều Hà Nội lất phất mưa, tụi mình tình cờ ngồi chung bàn trong một quán cà phê nhỏ. Không ai nghĩ cuộc trò chuyện vu vơ hôm ấy lại là khởi đầu của tất cả.</p>
+            </div>
+          </li>
+
+          <li class="tl reveal">
+            <div class="tl__media" data-ph>
+              <!-- 📷 images/story-2.jpg — Ảnh BUỔI HẸN HÒ / khoảnh khắc chính thức yêu nhau. Ảnh DỌC 4:5 -->
+              <img src="images/story-2.jpg" alt="Chính thức hẹn hò" loading="lazy" />
+            </div>
+            <div class="tl__body">
+              <span class="tl__date">14 · 02 · 2020</span>
+              <h3>Chính thức hẹn hò</h3>
+              <p>Sau nhiều lần “tình cờ” gặp nhau, anh lấy hết can đảm để nói lời thương. Và em đã gật đầu, với một nụ cười mà anh nhớ mãi.</p>
+            </div>
+          </li>
+
+          <li class="tl reveal">
+            <!-- tl__media--full: hiện ĐỦ ảnh theo tỉ lệ gốc, không cắt (hợp với ảnh ghép nhiều tấm).
+                 Muốn khung nào khác cũng không bị cắt thì thêm class này vào khung đó. -->
+            <div class="tl__media tl__media--full" data-ph>
+              <!-- 📷 images/di-muon-noi.jpg — Ảnh DU LỊCH / ảnh ghép nhiều chuyến đi. Tỉ lệ tùy ý (khung tự cao theo ảnh) -->
+              <img src="images/di-muon-noi.jpg" alt="Cùng nhau đi muôn nơi" loading="lazy" />
+            </div>
+            <div class="tl__body">
+              <span class="tl__date">2021 — 2025</span>
+              <h3>Cùng nhau đi muôn nơi</h3>
+              <p>Từ đỉnh Fansipan chạm mây đến biển xanh Phú Quốc, từ những miền đất thân thương đến những chân trời xa lạ. Chúng ta đã cùng nhau đi qua bao vùng đất, lưu giữ những kỷ niệm và viết nên câu chuyện của riêng mình. Bởi sau tất cả, nơi đẹp nhất không phải là nơi ta đến, mà là nơi có nhau.</p>
+            </div>
+          </li>
+
+          <li class="tl reveal">
+            <div class="tl__media" data-ph>
+              <!-- 📷 images/story-4.jpg — Ảnh CẦU HÔN / chụp cận bàn tay đeo nhẫn. Ảnh DỌC 4:5 -->
+              <img src="images/cau-hon.jpg" alt="Lời cầu hôn" loading="lazy" />
+            </div>
+            <div class="tl__body">
+              <span class="tl__date">Mùa thu 2026</span>
+              <h3>Lời cầu hôn</h3>
+              <p>Dưới bầu trời đầy sao, anh quỳ xuống và hỏi em câu hỏi quan trọng nhất cuộc đời. Câu trả lời là “Em đồng ý”.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- =============================================================
+         5. ẢNH NGANG + TRÍCH DẪN (hiệu ứng parallax)
+         ============================================================= -->
+    <section class="banner" aria-label="Trích dẫn">
+      <div class="banner__media" data-ph>
+        <!-- 📷 images/banner.jpg — Ảnh NGANG toàn chiều rộng (~2400x1400px), tông nhẹ nhàng, ít chi tiết:
+             nắm tay, nhìn nhau, bóng lưng giữa phong cảnh... Ảnh sẽ trượt nhẹ khi cuộn trang. -->
+        <img src="images/banner.jpg" alt="" loading="lazy" data-parallax />
+      </div>
+      <div class="banner__shade"></div>
+      <blockquote class="banner__quote reveal">
+        <p>“Mình về chung một nhà,<br />từ nay sớm tối có nhau.”</p>
+      </blockquote>
+    </section>
+
+    <!-- =============================================================
+         6. SỰ KIỆN — nội dung lấy từ js/config.js (mục events)
+         ============================================================= -->
+    <section class="section events" id="events">
+      <div class="container">
+        <header class="sec-head reveal">
+          <p class="eyebrow">When &amp; Where</p>
+          <h2 class="sec-title">Sự kiện <em>cưới</em></h2>
+        </header>
+
+        <div class="calendar reveal" id="calendar" aria-label="Lịch ngày cưới"></div>
+
+        <div class="event-grid" id="eventList"></div>
+
+        <div class="map reveal">
+          <iframe id="mapFrame" title="Bản đồ địa điểm tiệc cưới" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        </div>
+
+        <div class="dresscode reveal" id="dresscode">
+          <p class="eyebrow">Dress code</p>
+          <p class="dresscode__text">Chúng mình sẽ rất vui nếu bạn diện trang phục theo tông màu</p>
+          <div class="swatches" id="swatches"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================================
+         7. ALBUM ẢNH
+         📷 12 ảnh: images/gallery-01.jpg → images/gallery-12.jpg
+         Mỗi ô có tỉ lệ cố định (ghi bên cạnh), ảnh sẽ tự cắt cho vừa khung.
+         • g--tall   = ảnh DỌC 3:4
+         • g--wide   = ảnh NGANG 4:3
+         • g--square = ảnh VUÔNG 1:1
+         Muốn thêm ảnh: copy 1 dòng <figure>, đổi số thứ tự file. Bấm vào ảnh để xem phóng to.
+         ============================================================= -->
+    <section class="section album" id="album">
+      <div class="container">
+        <header class="sec-head reveal">
+          <p class="eyebrow">Our Moments</p>
+          <h2 class="sec-title">Album <em>ảnh cưới</em></h2>
+        </header>
+
+        <div class="gallery" id="gallery">
+          <figure class="g g--tall reveal" data-ph><img src="images/gallery-01.jpg" alt="Ảnh cưới 1" loading="lazy" /></figure>  <!-- DỌC: ảnh 2 người toàn thân -->
+          <figure class="g g--wide reveal" data-ph><img src="images/gallery-02.jpg" alt="Ảnh cưới 2" loading="lazy" /></figure>  <!-- NGANG: ảnh phong cảnh rộng có 2 người -->
+          <figure class="g g--square reveal" data-ph><img src="images/gallery-03.jpg" alt="Ảnh cưới 3" loading="lazy" /></figure><!-- VUÔNG: cận cảnh nhẫn / tay / hoa cưới -->
+          <figure class="g g--tall reveal" data-ph><img src="images/gallery-04.jpg" alt="Ảnh cưới 4" loading="lazy" /></figure>  <!-- DỌC: chân dung cô dâu -->
+          <figure class="g g--tall reveal" data-ph><img src="images/gallery-05.jpg" alt="Ảnh cưới 5" loading="lazy" /></figure>  <!-- DỌC: 2 người ôm nhau / nhìn nhau -->
+          <figure class="g g--wide reveal" data-ph><img src="images/gallery-06.jpg" alt="Ảnh cưới 6" loading="lazy" /></figure>  <!-- NGANG: khoảnh khắc vui nhộn, cười đùa -->
+          <figure class="g g--square reveal" data-ph><img src="images/gallery-07.jpg" alt="Ảnh cưới 7" loading="lazy" /></figure><!-- VUÔNG: chi tiết váy cưới / giày / vest -->
+          <figure class="g g--tall reveal" data-ph><img src="images/gallery-08.jpg" alt="Ảnh cưới 8" loading="lazy" /></figure>  <!-- DỌC: chân dung chú rể -->
+          <figure class="g g--wide reveal" data-ph><img src="images/gallery-09.jpg" alt="Ảnh cưới 9" loading="lazy" /></figure>  <!-- NGANG: bóng lưng 2 người / hoàng hôn -->
+          <figure class="g g--tall reveal" data-ph><img src="images/gallery-10.jpg" alt="Ảnh cưới 10" loading="lazy" /></figure> <!-- DỌC: nụ hôn / trán chạm trán -->
+          <figure class="g g--square reveal" data-ph><img src="images/gallery-11.jpg" alt="Ảnh cưới 11" loading="lazy" /></figure><!-- VUÔNG: ảnh đen trắng nghệ thuật -->
+          <figure class="g g--wide reveal" data-ph><img src="images/gallery-12.jpg" alt="Ảnh cưới 12" loading="lazy" /></figure> <!-- NGANG: ảnh nắm tay bước đi -->
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================================
+         8. XÁC NHẬN THAM DỰ + SỔ LƯU BÚT
+         ============================================================= -->
+    <section class="section rsvp" id="rsvp">
+      <div class="container">
+        <header class="sec-head reveal">
+          <p class="eyebrow">R.S.V.P</p>
+          <h2 class="sec-title">Xác nhận <em>tham dự</em></h2>
+          <p class="sec-sub">Để đón tiếp bạn chu đáo nhất, bạn vui lòng phản hồi trước ngày <b data-cfg="rsvpDeadline"></b> nhé!</p>
+        </header>
+
+        <div class="rsvp__grid">
+          <form class="card form reveal" id="rsvpForm" novalidate>
+            <label class="field">
+              <span>Họ và tên *</span>
+              <input name="name" type="text" required maxlength="80" autocomplete="name" placeholder="Nguyễn Văn A" />
+            </label>
+
+            <fieldset class="choice">
+              <legend>Bạn sẽ đến chứ?</legend>
+              <div class="choice__opts">
+                <label><input type="radio" name="attend" value="Có" checked /><span>Chắc chắn rồi!</span></label>
+                <label><input type="radio" name="attend" value="Không" /><span>Rất tiếc, mình bận</span></label>
+              </div>
+            </fieldset>
+
+            <div class="field-row">
+              <label class="field">
+                <span>Số người</span>
+                <select name="guests">
+                  <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Bạn là khách của</span>
+                <select name="side">
+                  <option>Nhà trai</option>
+                  <option>Nhà gái</option>
+                </select>
+              </label>
+            </div>
+
+            <label class="field">
+              <span>Lời chúc</span>
+              <textarea name="wish" rows="4" maxlength="500" placeholder="Gửi lời chúc tới cô dâu chú rể..."></textarea>
+            </label>
+
+            <button class="btn btn--solid btn--block" type="submit">Gửi xác nhận</button>
+          </form>
+
+          <div class="wishes reveal">
+            <div class="wishes__head">
+              <h3>Sổ lưu bút</h3>
+              <span id="wishCount"></span>
+            </div>
+            <ul class="wishes__list" id="wishList"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================================
+         9. MỪNG CƯỚI — thông tin ngân hàng lấy từ js/config.js (mục bank)
+         ============================================================= -->
+    <section class="section gift" id="gift">
+      <div class="container">
+        <header class="sec-head reveal">
+          <p class="eyebrow">Wedding Gift</p>
+          <h2 class="sec-title">Hộp <em>mừng cưới</em></h2>
+          <p class="sec-sub">Sự hiện diện của bạn là món quà ý nghĩa nhất với chúng mình.<br />Nếu không thể đến chung vui, bạn có thể gửi lời chúc qua đây.</p>
+        </header>
+
+        <div class="gift__grid">
+          <article class="card gift-card reveal">
+            <p class="eyebrow">Mừng cưới chú rể</p>
+            <div class="qr" data-ph>
+              <!-- 📷 images/qr-groom.png — Mã QR chuyển khoản của CHÚ RỂ (tải từ app ngân hàng / VietQR).
+                   Ảnh VUÔNG 1:1 (~600x600px), cắt sát mã QR, nền trắng. -->
+              <img src="images/qr-groom.png" alt="Mã QR mừng cưới chú rể" loading="lazy" />
+            </div>
+            <dl>
+              <div><dt>Ngân hàng</dt><dd data-cfg="bank.groom.bank"></dd></div>
+              <div><dt>Số tài khoản</dt><dd class="acc-no" data-cfg="bank.groom.number"></dd></div>
+              <div><dt>Chủ tài khoản</dt><dd data-cfg="bank.groom.owner"></dd></div>
+            </dl>
+            <button class="btn btn--ghost btn--sm" type="button" data-copy="bank.groom.number">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h9"/></svg>
+              Sao chép số TK
+            </button>
+          </article>
+
+          <article class="card gift-card reveal">
+            <p class="eyebrow">Mừng cưới cô dâu</p>
+            <div class="qr" data-ph>
+              <!-- 📷 images/qr-bride.png — Mã QR chuyển khoản của CÔ DÂU. Ảnh VUÔNG 1:1 (~600x600px), cắt sát mã QR. -->
+              <img src="images/qr-bride.png" alt="Mã QR mừng cưới cô dâu" loading="lazy" />
+            </div>
+            <dl>
+              <div><dt>Ngân hàng</dt><dd data-cfg="bank.bride.bank"></dd></div>
+              <div><dt>Số tài khoản</dt><dd class="acc-no" data-cfg="bank.bride.number"></dd></div>
+              <div><dt>Chủ tài khoản</dt><dd data-cfg="bank.bride.owner"></dd></div>
+            </dl>
+            <button class="btn btn--ghost btn--sm" type="button" data-copy="bank.bride.number">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h9"/></svg>
+              Sao chép số TK
+            </button>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =============================================================
+       10. LỜI CẢM ƠN
+       ============================================================= -->
+  <footer class="thanks">
+    <div class="thanks__media" data-ph>
+      <!-- 📷 images/thankyou.jpg — Ảnh KẾT THÚC (~2000px, dọc hoặc ngang đều được):
+           2 người đang cười, ôm nhau, hoặc nắm tay bước đi về phía trước. -->
+      <img src="images/thankyou.jpg" alt="" loading="lazy" data-parallax />
+    </div>
+    <div class="thanks__shade"></div>
+    <div class="thanks__content reveal">
+      <p class="thanks__title">Thank you</p>
+      <p class="thanks__text">Cảm ơn bạn đã dành thời gian quý báu cho chúng mình.<br />Hẹn gặp bạn trong ngày vui nhé!</p>
+      <p class="thanks__names"><span data-cfg="groom.short">Tuấn</span> &amp; <span data-cfg="bride.short">Ngọc Anh</span></p>
+      <p class="thanks__date" data-cfg="dateDots"></p>
+      <p class="hashtag" data-cfg="hashtag"></p>
+    </div>
+  </footer>
+
+  <!-- Nút nhạc + lên đầu trang -->
+  <!-- 🎵 Nhạc nền: music/song.mp3 (cấu hình trong js/config.js) -->
+  <audio id="bgm" loop preload="none"></audio>
+  <button class="fab music" id="musicBtn" type="button" aria-label="Bật/tắt nhạc" aria-pressed="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.6"/><path d="M12 5.6a6.4 6.4 0 0 1 6.4 6.4M12 8.2a3.8 3.8 0 0 1 3.8 3.8"/></svg>
+  </button>
+  <button class="fab to-top" id="toTop" type="button" aria-label="Lên đầu trang">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg>
+  </button>
+
+  <!-- Xem ảnh phóng to -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lb-btn lb-close" id="lbClose" type="button" aria-label="Đóng">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+    <button class="lb-btn lb-prev" id="lbPrev" type="button" aria-label="Ảnh trước">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m15 6-6 6 6 6"/></svg>
+    </button>
+    <img id="lbImg" alt="" />
+    <button class="lb-btn lb-next" id="lbNext" type="button" aria-label="Ảnh sau">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m9 6 6 6-6 6"/></svg>
+    </button>
+    <p class="lb-count" id="lbCount"></p>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/config.js?v=2"></script>
+  <script src="js/main.js?v=2"></script>
+</body>
+</html>

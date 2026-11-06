@@ -48,7 +48,6 @@ window.WEDDING = {
     'images/slide/slide3.jpg',
     'images/slide/slide4.jpg',
     'images/slide/slide5.jpg',
-    'images/slide/slide6.jpg',
   ],
   heroMode: 'slide',      // 'slide'   = từng ảnh toàn màn hình trượt ngang, lặp vô tận
                           // 'marquee' = dải nhiều ảnh trôi ngang liên tục không dừng

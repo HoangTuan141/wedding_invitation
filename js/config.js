@@ -43,9 +43,12 @@ window.WEDDING = {
        (vd ảnh dọc hiện trên màn hình ngang: '50% 20%' = ưu tiên giữ phần trên).
      ⚠️ Tên file phân biệt HOA/thường khi đưa lên mạng (.JPG khác .jpg). */
   heroSlides: [
-    'images/LAL03906.jpg',
-    'images/ho-guom.jpg',
-    'images/khieu-vu.jpg',
+    'images/slide/slide1.jpg',
+    'images/slide/slide2.jpg',
+    'images/slide/slide3.jpg',
+    'images/slide/slide4.jpg',
+    'images/slide/slide5.jpg',
+    'images/slide/slide6.jpg',
   ],
   heroMode: 'slide',      // 'slide'   = từng ảnh toàn màn hình trượt ngang, lặp vô tận
                           // 'marquee' = dải nhiều ảnh trôi ngang liên tục không dừng
@@ -57,7 +60,7 @@ window.WEDDING = {
      Định dạng: 'YYYY-MM-DDTHH:mm:00+07:00' (giữ nguyên +07:00 = giờ Việt Nam) */
   date: '2026-12-06T11:30:00+07:00',
   lunar: 'Tức ngày 28 tháng 10 năm Bính Ngọ',   // ⚠️ Nhớ kiểm tra lại ngày âm lịch
-  rsvpDeadline: '10.12.2026',                   // Hạn khách xác nhận tham dự
+  rsvpDeadline: '25.11.2026',                   // Hạn khách xác nhận tham dự
 
   /* ---------- CÁC SỰ KIỆN ----------
      icon: 'rings' | 'home' | 'glass'
@@ -74,6 +77,7 @@ window.WEDDING = {
       place: 'Tư gia nhà gái',
       address: 'Số 345, đường Nguyễn Trãi, Khương Đình, Hà Nội',
       hours: 1.5,
+      mapUrl: 'https://maps.app.goo.gl/EdCZq7hEx98DqXfV6'
     },
     {
       icon: 'home',
@@ -83,6 +87,7 @@ window.WEDDING = {
       place: 'Tư gia nhà trai',
       address: 'Số 729, đường tỉnh 361, Nam Đồ Sơn, Hải Phòng',
       hours: 1.5,
+      mapUrl: 'https://maps.app.goo.gl/fXcZLEncqaM5GgAx7'
     },
     {
       icon: 'glass',
@@ -92,7 +97,6 @@ window.WEDDING = {
       place: 'Trung tâm hội nghị Quốc gia',
       address: 'Số 1 đường Phạm Hùng, Từ Liêm, Hà Nội',
       hours: 3,
-      showMap: true,
       mapUrl: 'https://maps.app.goo.gl/SH6d7z6MhZDLrwjy8',
     },
   ],

@@ -34,6 +34,7 @@
     monthText: `Tháng ${W.m}`,
     year: W.y,
     time: W.time,
+    dateShort: W.short,
   });
 
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
@@ -59,6 +60,10 @@
     const ig = $('#inviteGuest');
     $('strong', ig).textContent = guest;
     ig.hidden = false;
+    // Điền sẵn tên khách vào ô "Họ và tên" của form xác nhận (khách vẫn sửa được).
+    // Dùng defaultValue để sau khi gửi form, ô tên vẫn giữ tên khách.
+    const nameInput = $('#rsvpForm [name=name]');
+    if (nameInput) nameInput.defaultValue = guest.trim().slice(0, 80);
   }
 
   /* ---------------------------------------------------------------
@@ -119,9 +124,15 @@
         frame.dataset.ph = '';
         if (clone) frame.setAttribute('aria-hidden', 'true');
         const m = makeImg(item, clone ? '' : ALT);
+        // Đo tỉ lệ thật của ảnh để khung rộng vừa khít, không cắt mất người
+        const fit = () => {
+          if (m.img.naturalWidth) frame.style.setProperty('--ar', `${m.img.naturalWidth} / ${m.img.naturalHeight}`);
+        };
+        m.img.addEventListener('load', fit);
         frame.append(m.pic);
         track.append(frame);
         m.load();
+        if (m.img.complete) fit();
       });
       track.style.setProperty('--marquee', `${set.length * (C.heroSpeed || 7)}s`);
       media.append(track);
@@ -237,7 +248,12 @@
     document.body.classList.add('is-opened');
     if (C.music) playMusic();
     hero.start();
-    setTimeout(() => opening.remove(), 1700);
+    // Chỉ gỡ màn mở thiệp khi cánh cửa đã mờ hẳn (hết hiệu ứng), có hẹn giờ dự phòng
+    const done = () => opening.remove();
+    $('.opening__door--right', opening).addEventListener('transitionend', (e) => {
+      if (e.propertyName === 'opacity') done();
+    });
+    setTimeout(done, 2800);
   });
 
   /* ---------------------------------------------------------------
@@ -322,7 +338,7 @@
         <p class="event__place">${esc(ev.place)}</p>
         <p class="event__addr">${esc(ev.address)}</p>
         <div class="event__actions">
-          <a class="btn btn--ghost btn--sm" href="${esc(mapLink(ev))}" target="_blank" rel="noopener">${PIN}Chỉ đường</a>
+          ${ev.directions === false ? '' : `<a class="btn btn--ghost btn--sm" href="${esc(mapLink(ev))}" target="_blank" rel="noopener">${PIN}Chỉ đường</a>`}
           <a class="btn btn--ghost btn--sm" href="${esc(gcalLink(ev))}" target="_blank" rel="noopener">${CAL}Lưu lịch</a>
         </div>
       </article>`;

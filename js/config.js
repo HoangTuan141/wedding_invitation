@@ -16,7 +16,7 @@ window.WEDDING = {
     father: 'Hoàng Đăng Mẫn',               // Tên bố (đã có sẵn chữ "Ông" phía trước)
     mother: 'Nguyễn Thị Tỉnh',            // Tên mẹ (đã có sẵn chữ "Bà" phía trước)
     address: 'Nam Đồ Sơn, Hải Phòng',
-    bio: 'Một chàng trai trầm tính, mê cà phê sáng và những chuyến đi xa. Người luôn tin rằng điều tuyệt vời nhất đời mình là được gặp em.',
+    bio: 'Một người mang đến cảm giác an tâm, biến những điều bình dị thành niềm vui và biến một người thành nơi để trở về.',
   },
 
   /* ---------- CÔ DÂU ---------- */
@@ -27,11 +27,17 @@ window.WEDDING = {
     father: 'Trần Gia Cảnh',
     mother: 'Nguyễn Thị Nguyệt',
     address: 'Khương Đình, Hà Nội',
-    bio: 'Cô gái yêu hoa, yêu nắng và hay cười. Người đã khiến những ngày bình thường của anh trở nên đặc biệt hơn bao giờ hết.',
+    bio: 'Một người yêu cái đẹp, trân trọng những điều nhỏ bé và tin rằng hạnh phúc được tạo nên từ những điều bình dị.',
   },
 
   monogram: ['T', 'N'],                  // 2 chữ cái viết tắt hiện ở logo/màn mở thiệp
   city: 'Hà Nội',
+  // Địa điểm hiện ngay dưới dòng "Hôn lễ được cử hành vào lúc ..." (phần lời mời)
+  venue: {
+    room: 'Tại phòng 313',                    // để '' nếu không cần
+    place: 'Trung tâm Hội nghị Quốc gia',
+    address: 'Số 1 đường Phạm Hùng, Từ Liêm, Hà Nội',
+  },
   hashtag: '#TuanNhiWedding',
 
   /* ---------- ẢNH BÌA (SLIDE CHẠY VÔ TẬN) ----------
@@ -48,25 +54,29 @@ window.WEDDING = {
     'images/slide/slide3.jpg',
     'images/slide/slide4.jpg',
     'images/slide/slide5.jpg',
+    'images/slide/slide6.jpg',
+    'images/slide/slide7.jpg',
+    'images/slide/slide8.jpg',
   ],
-  heroMode: 'slide',      // 'slide'   = từng ảnh toàn màn hình trượt ngang, lặp vô tận
+  heroMode: 'marquee',    // 'slide'   = từng ảnh toàn màn hình trượt ngang, lặp vô tận
                           // 'marquee' = dải nhiều ảnh trôi ngang liên tục không dừng
   heroInterval: 3,        // (slide)   số giây mỗi ảnh đứng yên trước khi chuyển
-  heroSpeed: 5,           // (marquee) số giây để mỗi ảnh trôi qua — số càng lớn càng chậm
+  heroSpeed: 12,          // (marquee) số giây để mỗi ảnh trôi qua — số càng lớn càng chậm
 
   /* ---------- NGÀY CƯỚI ----------
      Giờ chính lễ / tiệc — dùng cho đồng hồ đếm ngược, lịch, tiêu đề.
      Định dạng: 'YYYY-MM-DDTHH:mm:00+07:00' (giữ nguyên +07:00 = giờ Việt Nam) */
-  date: '2026-12-06T11:30:00+07:00',
+  date: '2026-12-06T11:00:00+07:00',
   lunar: 'Tức ngày 28 tháng 10 năm Bính Ngọ',   // ⚠️ Nhớ kiểm tra lại ngày âm lịch
-  rsvpDeadline: '25.11.2026',                   // Hạn khách xác nhận tham dự
+  rsvpDeadline: '26.11.2026',                   // Hạn khách xác nhận tham dự
 
   /* ---------- CÁC SỰ KIỆN ----------
      icon: 'rings' | 'home' | 'glass'
      hours: thời lượng (giờ) — dùng khi khách bấm "Lưu lịch"
      showMap: true  → địa điểm này sẽ hiện trên bản đồ lớn bên dưới
      mapUrl (không bắt buộc): dán link Google Maps chính xác của địa điểm
-       (Google Maps → Chia sẻ → Sao chép đường liên kết) */
+       (Google Maps → Chia sẻ → Sao chép đường liên kết)
+     directions: false → ẩn nút "Chỉ đường" của sự kiện đó */
   events: [
     {
       icon: 'rings',
@@ -74,7 +84,8 @@ window.WEDDING = {
       host: 'Tại nhà gái',
       date: '2026-11-28T11:00:00+07:00',
       place: 'Tư gia nhà gái',
-      address: 'Số 345, đường Nguyễn Trãi, Khương Đình, Hà Nội',
+      address: '',
+      directions: false,
       hours: 1.5,
       mapUrl: 'https://maps.app.goo.gl/EdCZq7hEx98DqXfV6'
     },
@@ -84,7 +95,8 @@ window.WEDDING = {
       host: 'Tại nhà trai',
       date: '2026-11-28T17:00:00+07:00',
       place: 'Tư gia nhà trai',
-      address: 'Số 729, đường tỉnh 361, Nam Đồ Sơn, Hải Phòng',
+      address: 'tr',
+      directions: false,
       hours: 1.5,
       mapUrl: 'https://maps.app.goo.gl/fXcZLEncqaM5GgAx7'
     },
@@ -92,7 +104,7 @@ window.WEDDING = {
       icon: 'glass',
       title: 'Tiệc Cưới',
       host: 'Trân trọng kính mời',
-      date: '2026-12-06T11:30:00+07:00',
+      date: '2026-12-06T11:00:00+07:00',
       place: 'Trung tâm hội nghị Quốc gia',
       address: 'Số 1 đường Phạm Hùng, Từ Liêm, Hà Nội',
       hours: 3,
@@ -102,12 +114,12 @@ window.WEDDING = {
 
   /* ---------- DRESS CODE ----------
      Các màu gợi ý trang phục cho khách. Để [] nếu không muốn hiển thị. */
-  dressCode: ['#F3EDE4', '#E4D3BE', '#C9AE8F', '#8E9B88'],
+  dressCode: [],  // đang tắt. Bật lại: ['#F3EDE4', '#E4D3BE', '#C9AE8F', '#8E9B88']
 
   /* ---------- MỪNG CƯỚI ---------- */
   bank: {
     groom: { bank: 'Techcombank', number: '3926868688', owner: 'HOANG ANH TUAN' },
-    bride: { bank: 'Techcombank', number: '9876543210', owner: 'TRAN YEN NHI' },
+    bride: { bank: 'Techcombank', number: '241200', owner: 'TRAN YEN NHI' },
   },
 
   /* ---------- NHẠC NỀN ----------
@@ -118,7 +130,7 @@ window.WEDDING = {
      Dán link Web App của Google Apps Script vào đây để lưu về Google Sheets
      (hướng dẫn trong README.md, code mẫu ở google-apps-script.js).
      Để trống → lời chúc chỉ lưu tạm trên trình duyệt của khách. */
-  rsvpEndpoint: '',
+  rsvpEndpoint: 'https://script.google.com/macros/s/AKfycbxmc3dNjgI7t8sdExXH4KrMiscZfG4K9LA2MD_wv0OFYsrH_kB8qyOSCL4_Fhpp3r3L/exec',
 
   petals: true,                          // Hiệu ứng cánh hoa rơi nhẹ
 };

@@ -33,8 +33,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Great+Vibes&display=swap" rel="stylesheet" />
-  <!-- ?v=13: đổi số này mỗi khi sửa CSS/JS để trình duyệt khách không dùng bản cũ trong cache -->
-  <link rel="stylesheet" href="css/style.css?v=13" />
+  <!-- ?v=14: đổi số này mỗi khi sửa CSS/JS để trình duyệt khách không dùng bản cũ trong cache -->
+  <link rel="stylesheet" href="css/style.css?v=14" />
 </head>
 
 <body class="is-locked">
@@ -388,7 +388,7 @@
       <div class="container">
         <header class="sec-head reveal">
           <p class="eyebrow">R.S.V.P</p>
-          <h2 class="sec-title">Xác nhận tham dự <em class="nowrap">tiệc cưới</em></h2>
+          <h2 class="sec-title">Xác nhận tham dự <em class="nowrap" data-cfg="rsvpEvent">tiệc cưới</em></h2>
           <!-- Giờ, ngày lấy từ config.js → date; địa điểm lấy từ config.js → venue -->
           <p class="rsvp__event">
             <span><b data-cfg="time"></b> · <span data-cfg="weekday"></span> <span data-cfg="dateShort"></span></span>
@@ -405,7 +405,7 @@
             </label>
 
             <fieldset class="choice">
-              <legend>Bạn sẽ đến dự tiệc cưới chứ?</legend>
+              <legend>Bạn sẽ đến dự <i class="legend__ev" data-cfg="rsvpEvent">tiệc cưới</i> chứ?</legend>
               <div class="choice__opts">
                 <label><input type="radio" name="attend" value="Có" checked /><span>Chắc chắn rồi!</span></label>
                 <label><input type="radio" name="attend" value="Không" /><span>Rất tiếc, mình bận</span></label>
@@ -535,7 +535,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="js/config.js?v=13"></script>
-  <script src="js/main.js?v=13"></script>
+  <script src="js/config.js?v=14"></script>
+  <script src="js/main.js?v=14"></script>
 </body>
 </html>

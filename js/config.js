@@ -130,6 +130,7 @@ window.WEDDING = {
   gift: 'bride',                         // Hộp mừng cưới hiện tài khoản của ai: 'bride' hoặc 'groom'
   guestSide: 'Nhà gái',                  // Chọn sẵn "Bạn là khách của" trong form xác nhận (link tiệc cưới)
   guestLineWe: 'chúng mình',             // Cách xưng ở câu "Cùng hai gia đình, ... trân trọng báo tin" và "...niềm vui và vinh hạnh của ..."
+  rsvpEvent: 'tiệc cưới',               // Phần xác nhận: "Xác nhận tham dự ..." và "Bạn sẽ đến dự ... chứ?"
 
   /* ---------- NHẠC NỀN ----------
      🎵 Đặt file nhạc vào music/song.mp3 (nên < 5MB). Để '' nếu không dùng nhạc. */
@@ -166,6 +167,7 @@ window.WEDDING = {
       gift: 'groom',                                  // Hộp mừng cưới hiện QR chú rể
       guestSide: 'Nhà trai',                          // Chọn sẵn "Bạn là khách của" trong form
       guestLineWe: 'chúng tôi',                       // Link thành hôn xưng "chúng tôi" (gửi cả người lớn tuổi)
+      rsvpEvent: 'lễ thành hôn',                      // "Xác nhận tham dự lễ thành hôn"
       // Link Web App của Google Sheet riêng cho lễ thành hôn (file "Xác nhận tham dự lễ thành hôn 28/11")
       rsvpEndpoint: 'https://script.google.com/macros/s/AKfycbwmJBggE7ePIT0UPSAIVolKVXqzfQ4bTgEzcT0WETlToJNMf1KdsccLjcZVoIX8k3-m/exec',
       events: [

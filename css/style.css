@@ -1063,6 +1063,7 @@ body.is-opened .hero__in { opacity: 1; transform: none; }
 .choice__opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
 .choice label { position: relative; cursor: pointer; }
 .choice input { position: absolute; opacity: 0; pointer-events: none; }
+.legend__ev { font-style: normal; }
 .choice span {
   display: block;
   padding: 12px 10px;

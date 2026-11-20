@@ -1192,8 +1192,33 @@ body.is-opened .hero__in { opacity: 1; transform: none; }
 .fab svg { width: 22px; height: 22px; }
 body:not(.is-opened) .fab { opacity: 0; pointer-events: none; }
 .music { bottom: calc(18px + env(safe-area-inset-bottom)); }
-.music svg { opacity: .55; }
-.music.is-playing svg { opacity: 1; color: var(--accent); animation: spin 5s linear infinite; }
+.music svg { color: var(--muted); }
+.music.is-playing svg { color: var(--accent); }
+.music .music__off,
+.music.is-playing .music__on { display: block; }
+.music .music__on,
+.music.is-playing .music__off { display: none; }
+/* Nhãn chữ nhỏ bên trái nút, chỉ hiện vài giây sau khi mở thiệp */
+.music__label {
+  position: absolute;
+  right: calc(100% + 10px);
+  top: 50%;
+  padding: 7px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 252, 248, .92);
+  box-shadow: 0 10px 22px -12px rgba(0, 0, 0, .3);
+  font-size: .74rem;
+  font-weight: 500;
+  letter-spacing: .04em;
+  white-space: nowrap;
+  color: var(--ink);
+  opacity: 0;
+  transform: translate(8px, -50%);
+  transition: opacity .5s, transform .5s var(--ease);
+  pointer-events: none;
+}
+.music.show-hint .music__label { opacity: 1; transform: translate(0, -50%); pointer-events: auto; }
 .music::after {
   content: '';
   position: absolute;

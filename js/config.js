@@ -76,6 +76,7 @@ window.WEDDING = {
      showMap: true  → địa điểm này sẽ hiện trên bản đồ lớn bên dưới
      mapUrl (không bắt buộc): dán link Google Maps chính xác của địa điểm
        (Google Maps → Chia sẻ → Sao chép đường liên kết)
+     mapCoords: 'vĩ độ,kinh độ' → ghim đúng vị trí trên bản đồ lớn (lấy từ link Google Maps, sau dấu @)
      directions: false → ẩn nút "Chỉ đường" của sự kiện đó
      main: true → sự kiện chính, hiện thành thẻ lớn ở cuối dòng thời gian
        (các sự kiện khác là mốc nhỏ). room: số phòng, hiện trên thẻ chính */
@@ -97,7 +98,7 @@ window.WEDDING = {
       host: 'Tại nhà trai',
       date: '2026-11-28T17:00:00+07:00',
       place: 'Tư gia nhà trai',
-      address: 'tr',
+      address: 'Số 729, đường tỉnh 361, Nam Đồ Sơn, Hải Phòng',
       directions: false,
       hours: 1.5,
       mapUrl: 'https://maps.app.goo.gl/fXcZLEncqaM5GgAx7'
@@ -109,10 +110,11 @@ window.WEDDING = {
       date: '2026-12-06T11:00:00+07:00',
       main: true,                 // thẻ lớn cuối dòng thời gian
       room: 'Phòng 313',
-      place: 'Trung tâm hội nghị Quốc gia',
+      place: 'Trung tâm Hội nghị Quốc gia',
       address: 'Số 1 đường Phạm Hùng, Từ Liêm, Hà Nội',
       hours: 3,
       mapUrl: 'https://maps.app.goo.gl/SH6d7z6MhZDLrwjy8',
+      mapCoords: '21.0060568,105.7876365',
     },
   ],
 
@@ -122,19 +124,72 @@ window.WEDDING = {
 
   /* ---------- MỪNG CƯỚI ---------- */
   bank: {
-    groom: { bank: 'Techcombank', number: '3926868688', owner: 'HOANG ANH TUAN' },
-    bride: { bank: 'Techcombank', number: '241200', owner: 'TRAN YEN NHI' },
+    groom: { bank: 'Techcombank', number: '3926868688', owner: 'HOANG ANH TUAN', qr: 'images/qr-bank/qr-tuan.jpg' },
+    bride: { bank: 'Techcombank', number: '241200', owner: 'TRAN YEN NHI', qr: 'images/qr-bank/qr-nhi.JPG' },
   },
+  gift: 'bride',                         // Hộp mừng cưới hiện tài khoản của ai: 'bride' hoặc 'groom'
+  guestSide: 'Nhà gái',                  // Chọn sẵn "Bạn là khách của" trong form xác nhận (link tiệc cưới)
 
   /* ---------- NHẠC NỀN ----------
      🎵 Đặt file nhạc vào music/song.mp3 (nên < 5MB). Để '' nếu không dùng nhạc. */
-  music: 'music/song.mp3',
+  music: 'music/i_do.mp3',
+  musicVolume: 0.3,                      // Âm lượng nhạc nền: 0 = tắt, 1 = to nhất (đang để 30%)
+  musicFadeIn: 5,                        // Số giây nhạc to dần từ im lặng tới mức trên
 
   /* ---------- LƯU XÁC NHẬN THAM DỰ & LỜI CHÚC ----------
      Dán link Web App của Google Apps Script vào đây để lưu về Google Sheets
      (hướng dẫn trong README.md, code mẫu ở google-apps-script.js).
      Để trống → lời chúc chỉ lưu tạm trên trình duyệt của khách. */
-  rsvpEndpoint: 'https://script.google.com/macros/s/AKfycbxmc3dNjgI7t8sdExXH4KrMiscZfG4K9LA2MD_wv0OFYsrH_kB8qyOSCL4_Fhpp3r3L/exec',
+  rsvpEndpoint: 'https://script.google.com/macros/s/AKfycbxmc3dNjgI7t8sdExXH4KrMiscZfG4K9LA2MD_wv0OFYsrH_kB8qyOSCL4_Fhpp3r3L/exec', // Sheet TIỆC CƯỚI (06.12)
 
   petals: true,                          // Hiệu ứng cánh hoa rơi nhẹ
+
+  /* =====================================================================
+     HAI LINK THIỆP
+       • .../wedding_invitation/tiec-cuoi/  → dùng thông tin phía trên (06.12, TT Hội nghị Quốc gia)
+       • .../wedding_invitation/thanh-hon/  → dùng thông tin phía trên, GHI ĐÈ bởi mục 'thanh-hon' dưới đây
+     Mục nào không ghi trong 'thanh-hon' thì dùng chung (ảnh, tên, album...).
+     Ảnh + tiêu đề xem trước khi gửi Zalo/Facebook sửa trong thanh-hon/index.html và tiec-cuoi/index.html
+     ===================================================================== */
+  sides: {
+    'thanh-hon': {
+      date: '2026-11-28T17:00:00+07:00',             // Giờ tiệc nhà trai: đếm ngược, lịch, ảnh bìa...
+      lunar: 'Tức ngày 20 tháng 10 năm Bính Ngọ',     // ⚠️ Suy ra từ 06.12 = 28/10 âm, nhớ kiểm tra lại
+      rsvpDeadline: '24.11.2026',                     // Hạn phản hồi riêng cho link thành hôn
+      city: 'Hải Phòng',
+      venue: {
+        room: '',
+        place: 'Tư gia nhà trai',
+        address: 'Số 729, đường tỉnh 361, Nam Đồ Sơn, Hải Phòng',
+      },
+      gift: 'groom',                                  // Hộp mừng cưới hiện QR chú rể
+      guestSide: 'Nhà trai',                          // Chọn sẵn "Bạn là khách của" trong form
+      // Link Web App của Google Sheet riêng cho lễ thành hôn (file "Xác nhận tham dự lễ thành hôn 28/11")
+      rsvpEndpoint: 'https://script.google.com/macros/s/AKfycbwmJBggE7ePIT0UPSAIVolKVXqzfQ4bTgEzcT0WETlToJNMf1KdsccLjcZVoIX8k3-m/exec',
+      events: [
+        {
+          icon: 'rings',
+          title: 'Lễ Vu Quy',
+          host: 'Tại nhà gái',
+          date: '2026-11-28T11:00:00+07:00',
+          place: 'Tư gia nhà gái',
+          address: '',
+          directions: false,
+          hours: 1.5,
+        },
+        {
+          icon: 'glass',
+          title: 'Tiệc Cưới',
+          host: 'Trân trọng kính mời',
+          date: '2026-11-28T17:00:00+07:00',
+          main: true,
+          place: 'Tư gia nhà trai',
+          address: 'Số 729, đường tỉnh 361, Nam Đồ Sơn, Hải Phòng',
+          hours: 3,
+          mapUrl: 'https://maps.app.goo.gl/fXcZLEncqaM5GgAx7',
+          mapCoords: '20.7092753,106.7378015',
+        },
+      ],
+    },
+  },
 };

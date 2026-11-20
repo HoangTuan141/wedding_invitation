@@ -6,6 +6,14 @@
   'use strict';
 
   const C = window.WEDDING;
+
+  // Link lễ thành hôn (thanh-hon/ chuyển sang ?le=thanh-hon): ghi đè thông tin bằng config.sides['thanh-hon']
+  const SIDE = new URLSearchParams(location.search).get('le');
+  if (SIDE && C.sides && C.sides[SIDE]) Object.assign(C, C.sides[SIDE]);
+  document.documentElement.dataset.side = SIDE && C.sides && C.sides[SIDE] ? SIDE : 'tiec-cuoi';
+  // Tài khoản hiện ở hộp mừng cưới (bride / groom)
+  C.giftAccount = (C.bank && C.bank[C.gift]) || (C.bank && C.bank.bride) || {};
+
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
   const pad = (n) => String(n).padStart(2, '0');
@@ -49,6 +57,16 @@
     if (v != null && v !== '') el.textContent = v;
   });
   document.title = `${C.groom.short} & ${C.bride.short} · ${W.short}`;
+
+  // Ảnh QR mừng cưới theo tài khoản đang chọn (cô dâu / chú rể)
+  const giftQr = $('#giftQr');
+  if (giftQr && C.giftAccount.qr) giftQr.src = C.giftAccount.qr;
+
+  // Chọn sẵn "Bạn là khách của" theo link (nhà trai / nhà gái), giữ nguyên sau khi gửi form
+  const sideSelect = $('#rsvpForm [name=side]');
+  if (sideSelect && C.guestSide) {
+    [...sideSelect.options].forEach((o) => { o.defaultSelected = o.text === C.guestSide; });
+  }
 
   /* ---------------------------------------------------------------
      2. Tên khách mời từ link (?to=...)
@@ -232,11 +250,55 @@
   else musicBtn.hidden = true;
   audio.addEventListener('error', () => { musicBtn.hidden = true; });
 
+  const musicLabel = $('.music__label', musicBtn);
   const setPlaying = (on) => {
     musicBtn.classList.toggle('is-playing', on);
-    musicBtn.setAttribute('aria-pressed', String(on));
+    const text = on ? 'Tắt nhạc' : 'Bật nhạc';
+    musicBtn.setAttribute('aria-label', text);
+    if (musicLabel) musicLabel.textContent = text;
   };
-  const playMusic = () => audio.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+  // Hiện nhãn "Tắt nhạc" cạnh nút trong vài giây để khách biết chỗ tắt
+  let hintTimer;
+  const showMusicHint = (ms = 6000) => {
+    musicBtn.classList.add('show-hint');
+    clearTimeout(hintTimer);
+    hintTimer = setTimeout(() => musicBtn.classList.remove('show-hint'), ms);
+  };
+  // Âm lượng nhạc nền (0 → 1), chỉnh trong config.js → musicVolume.
+  // iPhone/iPad bỏ qua audio.volume, nên dùng Web Audio (GainNode) để chỉnh được trên mọi máy,
+  // kèm hiệu ứng nhạc to dần khi bắt đầu phát.
+  const VOLUME = Math.min(1, Math.max(0, C.musicVolume ?? 0.3));
+  const FADE_IN = Math.max(0, C.musicFadeIn ?? 5); // giây
+  let mixer = null; // null = chưa khởi tạo, false = trình duyệt không hỗ trợ
+  const setupMixer = () => {
+    if (mixer !== null) return;
+    mixer = false;
+    try {
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) return;
+      const ctx = new Ctx();
+      const gain = ctx.createGain();
+      gain.gain.value = 0;
+      ctx.createMediaElementSource(audio).connect(gain).connect(ctx.destination);
+      mixer = { ctx, gain };
+    } catch { mixer = false; }
+  };
+  const fadeIn = () => {
+    if (!mixer) { audio.volume = VOLUME; return; }
+    mixer.ctx.resume();
+    const g = mixer.gain.gain, now = mixer.ctx.currentTime;
+    g.cancelScheduledValues(now);
+    g.setValueAtTime(g.value, now);
+    g.linearRampToValueAtTime(VOLUME, now + FADE_IN);
+  };
+  // Quay lại tab/ứng dụng (nhất là iPhone) thì đánh thức lại bộ trộn âm
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && mixer && !audio.paused) mixer.ctx.resume();
+  });
+  const playMusic = () => {
+    setupMixer();
+    return audio.play().then(() => { fadeIn(); setPlaying(true); }).catch(() => setPlaying(false));
+  };
   musicBtn.addEventListener('click', () => {
     if (audio.paused) playMusic();
     else { audio.pause(); setPlaying(false); }
@@ -246,7 +308,8 @@
     opening.classList.add('is-open');
     document.body.classList.remove('is-locked');
     document.body.classList.add('is-opened');
-    if (C.music) playMusic();
+    // Nhạc phát thì hiện nhãn "Tắt nhạc" cạnh nút sau khi cửa mở xong
+    if (C.music) playMusic().then(() => { if (!audio.paused) setTimeout(() => showMusicHint(), 1800); });
     hero.start();
     // Chỉ gỡ màn mở thiệp khi cánh cửa đã mờ hẳn (hết hiệu ứng), có hẹn giờ dự phòng
     const done = () => opening.remove();
@@ -360,8 +423,11 @@
       </li>`;
   }).join('');
 
-  const mapEvent = C.events.find((e) => e.showMap) || C.events[C.events.length - 1];
-  $('#mapFrame').src = `https://www.google.com/maps?q=${encodeURIComponent(mapQuery(mapEvent))}&output=embed`;
+  // Bản đồ lớn: sự kiện showMap, nếu không có thì sự kiện chính (main), cuối cùng là sự kiện cuối.
+  // Có mapCoords (vĩ độ,kinh độ) thì ghim đúng tọa độ, tránh Google đoán sai theo tên địa điểm.
+  const mapEvent = C.events.find((e) => e.showMap) || C.events.find((e) => e.main) || C.events[C.events.length - 1];
+  const mapQ = mapEvent.mapCoords || mapQuery(mapEvent);
+  $('#mapFrame').src = `https://www.google.com/maps?q=${encodeURIComponent(mapQ)}&z=16&output=embed`;
 
   if (C.dressCode && C.dressCode.length) {
     $('#swatches').innerHTML = C.dressCode.map((c) => `<i style="background:${esc(c)}" title="${esc(c)}"></i>`).join('');

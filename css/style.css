@@ -594,7 +594,7 @@ body.is-opened .hero__in { opacity: 1; transform: none; }
 .when__year { font-family: var(--f-display); font-size: 1.5rem; letter-spacing: .3em; }
 .when__lunar { margin-top: 6px; font-family: var(--f-display); font-style: italic; font-weight: 500; font-size: 1.1rem; color: var(--muted); }
 
-.invite__guest { margin-top: 40px; font-family: var(--f-display); font-style: italic; font-size: 1.25rem; color: var(--ink-2); }
+.invite__guest { margin-top: 40px; font-family: var(--f-display); font-style: italic; font-size: 1.25rem; color: var(--ink-2); text-wrap: balance; }
 .invite__guest strong { font-weight: 600; color: var(--accent); }
 
 .countdown {

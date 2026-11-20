@@ -76,7 +76,9 @@ window.WEDDING = {
      showMap: true  → địa điểm này sẽ hiện trên bản đồ lớn bên dưới
      mapUrl (không bắt buộc): dán link Google Maps chính xác của địa điểm
        (Google Maps → Chia sẻ → Sao chép đường liên kết)
-     directions: false → ẩn nút "Chỉ đường" của sự kiện đó */
+     directions: false → ẩn nút "Chỉ đường" của sự kiện đó
+     main: true → sự kiện chính, hiện thành thẻ lớn ở cuối dòng thời gian
+       (các sự kiện khác là mốc nhỏ). room: số phòng, hiện trên thẻ chính */
   events: [
     {
       icon: 'rings',
@@ -105,6 +107,8 @@ window.WEDDING = {
       title: 'Tiệc Cưới',
       host: 'Trân trọng kính mời',
       date: '2026-12-06T11:00:00+07:00',
+      main: true,                 // thẻ lớn cuối dòng thời gian
+      room: 'Phòng 313',
       place: 'Trung tâm hội nghị Quốc gia',
       address: 'Số 1 đường Phạm Hùng, Từ Liêm, Hà Nội',
       hours: 3,

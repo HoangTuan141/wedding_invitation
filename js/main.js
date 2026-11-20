@@ -324,24 +324,40 @@
   const mapQuery = (ev) => `${ev.place}, ${ev.address}`;
   const mapLink = (ev) => ev.mapUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery(ev))}`;
 
-  $('#eventList').innerHTML = C.events.map((ev) => {
+  // Dòng thời gian: sự kiện có main: true (mặc định là sự kiện cuối) hiện thành thẻ lớn,
+  // các sự kiện còn lại là mốc nhỏ gọn phía trên.
+  const mainIdx = C.events.findIndex((e) => e.main);
+  const isMain = (i) => (mainIdx === -1 ? i === C.events.length - 1 : i === mainIdx);
+
+  $('#eventList').innerHTML = C.events.map((ev, i) => {
     const p = parts(ev.date);
+    if (!isMain(i)) {
+      return `
+      <li class="tl-ev tl-ev--minor reveal">
+        <p class="tl-ev__when">${p.short} · ${p.time}</p>
+        <h3 class="tl-ev__title">${esc(ev.title)}</h3>
+        <p class="tl-ev__place">${esc(ev.place)}</p>
+      </li>`;
+    }
     return `
-      <article class="event reveal">
-        <div class="event__icon">${ICONS[ev.icon] || ICONS.rings}</div>
-        <p class="event__host">${esc(ev.host)}</p>
-        <h3 class="event__title">${esc(ev.title)}</h3>
-        <p class="event__time">${p.time}</p>
-        <p class="event__date">${p.weekday}, ${p.short}</p>
-        <p class="event__lunar">${esc(ev.lunar || C.lunar)}</p>
-        <div class="event__divider"></div>
-        <p class="event__place">${esc(ev.place)}</p>
-        <p class="event__addr">${esc(ev.address)}</p>
-        <div class="event__actions">
-          ${ev.directions === false ? '' : `<a class="btn btn--ghost btn--sm" href="${esc(mapLink(ev))}" target="_blank" rel="noopener">${PIN}Chỉ đường</a>`}
-          <a class="btn btn--ghost btn--sm" href="${esc(gcalLink(ev))}" target="_blank" rel="noopener">${CAL}Lưu lịch</a>
-        </div>
-      </article>`;
+      <li class="tl-ev tl-ev--main">
+        <article class="event reveal">
+          <div class="event__icon">${ICONS[ev.icon] || ICONS.rings}</div>
+          <p class="event__host">${esc(ev.host)}</p>
+          <h3 class="event__title">${esc(ev.title)}</h3>
+          <p class="event__time">${p.time}</p>
+          <p class="event__date">${p.weekday}, ${p.short}</p>
+          <p class="event__lunar">${esc(ev.lunar || C.lunar)}</p>
+          <div class="event__divider"></div>
+          ${ev.room ? `<p class="event__room">${esc(ev.room)}</p>` : ''}
+          <p class="event__place">${esc(ev.place)}</p>
+          ${ev.address ? `<p class="event__addr">${esc(ev.address)}</p>` : ''}
+          <div class="event__actions">
+            ${ev.directions === false ? '' : `<a class="btn btn--ghost btn--sm" href="${esc(mapLink(ev))}" target="_blank" rel="noopener">${PIN}Chỉ đường</a>`}
+            <a class="btn btn--ghost btn--sm" href="${esc(gcalLink(ev))}" target="_blank" rel="noopener">${CAL}Lưu lịch</a>
+          </div>
+        </article>
+      </li>`;
   }).join('');
 
   const mapEvent = C.events.find((e) => e.showMap) || C.events[C.events.length - 1];

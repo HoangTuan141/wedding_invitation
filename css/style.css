@@ -817,7 +817,71 @@ body.is-opened .hero__in { opacity: 1; transform: none; }
   animation: beat 1.6s ease-in-out infinite;
 }
 
-.event-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 24px; }
+/* Dòng thời gian sự kiện: đường dọc nối các mốc, mốc cuối (Tiệc cưới) là thẻ lớn */
+.tl-events {
+  --gap: 30px;      /* khoảng cách giữa các mốc */
+  --dot-x: 11px;    /* vị trí đường dọc tính từ mép trái */
+  position: relative;
+  max-width: 580px;
+  margin: 0 auto;
+  padding-left: 44px;
+  list-style: none;
+}
+.tl-ev { position: relative; }
+.tl-ev + .tl-ev { margin-top: var(--gap); }
+/* Chấm tròn của mỗi mốc */
+.tl-ev::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  left: calc(var(--dot-x) - 44px - 5px);
+  top: 7px;
+  width: 11px;
+  height: 11px;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  background: var(--bg);
+}
+/* Đoạn nối từ mốc này xuống mốc kế tiếp */
+.tl-ev--minor::after {
+  content: '';
+  position: absolute;
+  left: calc(var(--dot-x) - 44px);
+  top: 18px;
+  bottom: calc(-1 * var(--gap) - 7px);
+  width: 1px;
+  background: var(--accent-2);
+}
+.tl-ev--minor:has(+ .tl-ev--main)::after { bottom: calc(-1 * var(--gap) - 40px); }
+/* Mốc chính: chấm hình thoi tô màu, đặt ngang phần đầu thẻ */
+.tl-ev--main::before {
+  left: calc(var(--dot-x) - 44px - 7px);
+  top: 40px;
+  width: 15px;
+  height: 15px;
+  border: 0;
+  border-radius: 3px;
+  background: var(--accent);
+  transform: rotate(45deg);
+  box-shadow: 0 0 0 6px var(--accent-soft);
+}
+.tl-ev__when {
+  font-size: .76rem;
+  font-weight: 600;
+  letter-spacing: .16em;
+  color: var(--accent);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.tl-ev__title { margin-top: 2px; font-family: var(--f-display); font-size: 1.4rem; font-weight: 500; line-height: 1.3; }
+.tl-ev__place { font-size: .9rem; color: var(--muted); }
+.tl-ev--main .event { border-color: var(--accent-2); box-shadow: var(--shadow); }
+.event__room {
+  font-family: var(--f-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--ink);
+  font-variant-numeric: lining-nums;
+}
 .event {
   position: relative;
   padding: 44px 30px 34px;
@@ -853,7 +917,7 @@ body.is-opened .hero__in { opacity: 1; transform: none; }
 .event__lunar { font-family: var(--f-display); font-style: italic; font-weight: 500; font-size: 1rem; color: var(--muted); }
 .event__divider { width: 40px; height: 1px; margin: 22px auto; background: var(--accent-2); }
 .event__place { font-weight: 500; }
-.event__addr { margin-top: 4px; font-size: .88rem; color: var(--muted); }
+.event__addr { margin-top: 4px; font-size: .88rem; color: var(--muted); text-wrap: balance; }
 .event__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 26px; }
 
 .map {

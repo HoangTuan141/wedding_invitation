@@ -61,7 +61,7 @@ window.WEDDING = {
   heroMode: 'marquee',    // 'slide'   = từng ảnh toàn màn hình trượt ngang, lặp vô tận
                           // 'marquee' = dải nhiều ảnh trôi ngang liên tục không dừng
   heroInterval: 3,        // (slide)   số giây mỗi ảnh đứng yên trước khi chuyển
-  heroSpeed: 12,          // (marquee) số giây để mỗi ảnh trôi qua — số càng lớn càng chậm
+  heroSpeed: 6,           // (marquee) số giây để mỗi ảnh trôi qua — số càng lớn càng chậm (vd 6 = nhanh, 12 = rất chậm)
 
   /* ---------- NGÀY CƯỚI ----------
      Giờ chính lễ / tiệc — dùng cho đồng hồ đếm ngược, lịch, tiêu đề.

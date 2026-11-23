@@ -81,7 +81,17 @@
     // Điền sẵn tên khách vào ô "Họ và tên" của form xác nhận (khách vẫn sửa được).
     // Dùng defaultValue để sau khi gửi form, ô tên vẫn giữ tên khách.
     const nameInput = $('#rsvpForm [name=name]');
-    if (nameInput) nameInput.defaultValue = guest.trim().slice(0, 80);
+    if (nameInput) {
+      nameInput.defaultValue = guest.trim().slice(0, 80);
+      // Gợi ý "có thể sửa tên" + bút chì trong ô; chạm vào ô thì bôi đen tên để gõ đè luôn
+      const field = nameInput.closest('.field');
+      const hint = $('#nameHint');
+      if (hint) hint.hidden = false;
+      if (field) field.classList.add('is-prefilled');
+      nameInput.addEventListener('focus', () => {
+        if (nameInput.value === nameInput.defaultValue) setTimeout(() => nameInput.select(), 0);
+      });
+    }
   }
 
   /* ---------------------------------------------------------------

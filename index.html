@@ -33,8 +33,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Great+Vibes&display=swap" rel="stylesheet" />
-  <!-- ?v=15: đổi số này mỗi khi sửa CSS/JS để trình duyệt khách không dùng bản cũ trong cache -->
-  <link rel="stylesheet" href="css/style.css?v=15" />
+  <!-- ?v=16: đổi số này mỗi khi sửa CSS/JS để trình duyệt khách không dùng bản cũ trong cache -->
+  <link rel="stylesheet" href="css/style.css?v=16" />
 </head>
 
 <body class="is-locked">
@@ -65,12 +65,12 @@
     <div class="opening__card">
       <p class="eyebrow eyebrow--light">The Wedding Of</p>
       <div class="monogram" aria-hidden="true">
-        <span data-cfg="monogram.0">T</span><em>&amp;</em><span data-cfg="monogram.1">A</span>
+        <span data-cfg="monogram.0">T</span><em>&amp;</em><span data-cfg="monogram.1">N</span>
       </div>
       <h1 class="opening__names">
-        <span data-cfg="groom.short">Tuấn</span> <em>&amp;</em> <span data-cfg="bride.short">Ngọc Anh</span>
+        <span data-cfg="groom.short">Anh Tuấn</span> <em>&amp;</em> <span data-cfg="bride.short">Yến Nhi</span>
       </h1>
-      <p class="opening__date" data-cfg="dateDots">20 · 12 · 2026</p>
+      <p class="opening__date" data-cfg="dateDots">06 · 12 · 2026</p>
 
       <div class="opening__guest" id="guestBox" hidden>
         <span>Trân trọng kính mời</span>
@@ -88,7 +88,7 @@
 
   <!-- Thanh menu nổi (hiện ra khi cuộn qua ảnh bìa) -->
   <nav class="nav" id="nav" aria-label="Điều hướng">
-    <a href="#home" class="nav__logo"><span data-cfg="monogram.0">T</span><em>&amp;</em><span data-cfg="monogram.1">A</span></a>
+    <a href="#home" class="nav__logo"><span data-cfg="monogram.0">T</span><em>&amp;</em><span data-cfg="monogram.1">N</span></a>
     <ul class="nav__links">
       <li><a href="#couple">Cặp đôi</a></li>
       <li><a href="#story">Chuyện tình</a></li>
@@ -113,9 +113,9 @@
     <div class="hero__content">
       <p class="hero__eyebrow hero__in" style="--d:.5s"><span>A date with love</span></p>
       <h2 class="hero__names hero__in" style="--d:.7s">
-        <span data-cfg="groom.short">Tuấn</span><em>&amp;</em><span data-cfg="bride.short">Ngọc Anh</span>
+        <span data-cfg="groom.short">Anh Tuấn</span><em>&amp;</em><span data-cfg="bride.short">Yến Nhi</span>
       </h2>
-      <p class="hero__date hero__in" style="--d:.9s" data-cfg="dateDots">20 · 12 · 2026</p>
+      <p class="hero__date hero__in" style="--d:.9s" data-cfg="dateDots">06 · 12 · 2026</p>
       <p class="hero__place hero__in" style="--d:1s" data-cfg="city">Hà Nội</p>
     </div>
     <div class="hero__progress" id="heroProgress" aria-hidden="true" hidden>
@@ -399,9 +399,11 @@
 
         <div class="rsvp__grid">
           <form class="card form reveal" id="rsvpForm" novalidate>
-            <label class="field">
+            <label class="field field--name">
               <span>Họ và tên *</span>
-              <input name="name" type="text" required maxlength="80" autocomplete="name" placeholder="Nguyễn Văn A" />
+              <input name="name" type="text" required maxlength="80" autocomplete="name" placeholder="Nguyễn Văn A" aria-describedby="nameHint" />
+              <!-- Gợi ý chỉ hiện khi tên được điền sẵn từ link (?to=...), vd link gửi vào group -->
+              <small class="field__hint" id="nameHint" hidden><span class="nowrap">Tên này sẽ hiện trong sổ lưu bút,</span> <span class="nowrap">bạn có thể chỉnh lại nếu muốn</span></small>
             </label>
 
             <fieldset class="choice">
@@ -498,7 +500,7 @@
     <div class="thanks__content reveal">
       <p class="thanks__title">Thank you</p>
       <p class="thanks__text">Cảm ơn bạn đã dành thời gian quý báu cho chúng mình.<br />Hẹn gặp bạn trong ngày vui nhé!</p>
-      <p class="thanks__names"><span data-cfg="groom.short">Tuấn</span> &amp; <span data-cfg="bride.short">Ngọc Anh</span></p>
+      <p class="thanks__names"><span data-cfg="groom.short">Anh Tuấn</span> &amp; <span data-cfg="bride.short">Yến Nhi</span></p>
       <p class="thanks__date" data-cfg="dateDots"></p>
       <p class="hashtag" data-cfg="hashtag"></p>
     </div>
@@ -535,7 +537,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="js/config.js?v=15"></script>
-  <script src="js/main.js?v=15"></script>
+  <script src="js/config.js?v=16"></script>
+  <script src="js/main.js?v=16"></script>
 </body>
 </html>

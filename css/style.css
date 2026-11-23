@@ -57,7 +57,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 /* Cormorant mặc định dùng số kiểu cổ (lên xuống dòng) → ép số thẳng hàng cho ngày giờ */
 .opening__date, .hero__date, .when__row strong, .when__year, .countdown b, .cal__month,
 .event__time, .acc-no, .thanks__date { font-variant-numeric: lining-nums tabular-nums; }
-/* Chữ viết tay có khoảng trắng rất hẹp → nới ra cho tên 2 chữ (vd "Ngọc Anh") */
+/* Chữ viết tay có khoảng trắng rất hẹp → nới ra cho tên 2 chữ (vd "Yến Nhi") */
 .opening__names span, .hero__names span, .thanks__title { word-spacing: .18em; white-space: nowrap; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
@@ -1068,6 +1068,20 @@ body.is-opened .hero__in { opacity: 1; transform: none; }
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A3825F' stroke-width='1.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") right 2px center / 18px no-repeat;
 }
 .field select:disabled { opacity: .4; cursor: not-allowed; }
+/* Ô tên điền sẵn từ link: bút chì bên phải ô + dòng gợi ý có thể sửa */
+.field--name { position: relative; }
+.field--name.is-prefilled input {
+  padding-right: 28px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A3825F' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20h4L19 9l-4-4L4 16z'/%3E%3Cpath d='m13.5 6.5 4 4'/%3E%3C/svg%3E") right 2px center / 17px no-repeat;
+}
+.field__hint {
+  display: block;
+  margin-top: 8px;
+  font-size: .78rem;
+  font-style: italic;
+  color: var(--accent);
+}
+.field__hint[hidden] { display: none; }
 .field textarea { min-height: 104px; resize: vertical; line-height: 1.6; }
 .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
 .choice { margin-bottom: 24px; border: 0; }

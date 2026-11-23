@@ -134,7 +134,20 @@
       track.className = 'hero__track';
       let set = [...list];
       while (set.length < 4) set = set.concat(list); // đủ dài để phủ kín màn hình rộng
+
+      // Nền chờ: ảnh màn mở thiệp (đã tải sẵn) làm mờ → mạng chậm không thấy khung đen
+      const openingBg = $('.opening__bg');
+      if (openingBg && openingBg.currentSrc) media.style.setProperty('--hero-ph', `url("${openingBg.currentSrc}")`);
+
+      // Dải ảnh chỉ bắt đầu trôi khi khách đã bấm "Mở thiệp" VÀ ảnh đầu tiên đã tải xong
+      // (mạng quá chậm thì tối đa 12 giây sau khi mở thiệp vẫn cho trôi) → khách luôn thấy ảnh 1 trước.
+      track.classList.add('is-waiting');
+      let opened = false, firstReady = false;
+      const tryGo = () => { if (opened && firstReady) track.classList.remove('is-waiting'); };
+      const go = () => { firstReady = true; tryGo(); };
+
       // Nhân đôi dải ảnh, dịch đúng 50% là quay về điểm đầu → lặp liền mạch
+      const groups = new Map(); // ảnh gốc + bản lặp dùng chung 1 file → tải 1 lần
       [...set, ...set].forEach((item, i) => {
         const clone = i >= set.length;
         const frame = document.createElement('div');
@@ -142,19 +155,44 @@
         frame.dataset.ph = '';
         if (clone) frame.setAttribute('aria-hidden', 'true');
         const m = makeImg(item, clone ? '' : ALT);
-        // Đo tỉ lệ thật của ảnh để khung rộng vừa khít, không cắt mất người
-        const fit = () => {
-          if (m.img.naturalWidth) frame.style.setProperty('--ar', `${m.img.naturalWidth} / ${m.img.naturalHeight}`);
+        // Đo tỉ lệ thật của ảnh để khung rộng vừa khít, không cắt mất người; rồi cho ảnh hiện dần
+        const ready = () => {
+          if (!m.img.naturalWidth) return;
+          frame.style.setProperty('--ar', `${m.img.naturalWidth} / ${m.img.naturalHeight}`);
+          m.img.classList.add('is-loaded');
         };
-        m.img.addEventListener('load', fit);
+        m.img.addEventListener('load', ready);
         frame.append(m.pic);
         track.append(frame);
-        m.load();
-        if (m.img.complete) fit();
+        const key = item.src + '|' + (item.mobile || '');
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(m);
       });
       track.style.setProperty('--marquee', `${set.length * (C.heroSpeed || 7)}s`);
       media.append(track);
-      return idle;
+
+      // Tải LẦN LƯỢT theo thứ tự hiển thị (ảnh 1 xong mới tới ảnh 2...) thay vì tải 8 ảnh cùng lúc:
+      // mạng chậm vẫn có ảnh đầu hiện nhanh, các ảnh sau tải kịp trước khi trôi tới.
+      const queue = [...groups.values()];
+      const next = () => {
+        const g = queue.shift();
+        if (!g) return;
+        let moved = false;
+        const advance = () => { if (!moved) { moved = true; next(); } };
+        const lead = g[0].img;
+        lead.addEventListener('load', () => { go(); advance(); }, { once: true });
+        lead.addEventListener('error', advance, { once: true });
+        setTimeout(advance, 8000); // ảnh quá chậm thì bắt đầu tải song song ảnh tiếp theo
+        g.forEach((m) => m.load());
+      };
+      next();
+      return {
+        start() {
+          opened = true;
+          setTimeout(() => { firstReady = true; tryGo(); }, 12000);
+          tryGo();
+        },
+      };
     }
 
     const interval = Math.max(2, C.heroInterval || 5) * 1000;

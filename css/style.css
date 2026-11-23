@@ -370,21 +370,32 @@ body.is-opened .hero__media { transform: none; }
    không bị lẹm nhiều. Lớn hơn = chuyển mềm hơn nhưng phủ vào ảnh nhiều hơn, 0 = ghép sát mép */
 .hero__track {
   --blend: 10vh;
+  position: relative; /* nằm trên lớp nền mờ .hero__media::before */
   display: flex;
   width: max-content;
   height: 100%;
   margin-left: calc(-1 * var(--blend)); /* giấu mép mờ của ảnh đầu tiên ra ngoài màn hình */
   animation: marquee var(--marquee, 40s) linear infinite;
 }
+.hero__track.is-waiting { animation-play-state: paused; }
+/* Nền chờ khi ảnh slide chưa tải xong: ảnh màn mở thiệp làm mờ (JS gán --hero-ph) */
+.hero__media::before {
+  content: '';
+  position: absolute;
+  inset: -40px;
+  background: #2A231F var(--hero-ph, none) center / cover no-repeat;
+  filter: blur(18px) brightness(.62) saturate(.9);
+}
+.hero__frame img { opacity: 0; transition: opacity .9s ease; }
+.hero__frame img.is-loaded { opacity: 1; }
 .hero__frame {
   position: relative;
   flex: none;
   /* Khung rộng đúng theo tỉ lệ ảnh (JS tự đo) → ảnh hiện trọn, không bị cắt mất người */
   height: 100%;
-  aspect-ratio: var(--ar, 3 / 2);
+  aspect-ratio: var(--ar, 2 / 3); /* tạm theo ảnh dọc cho tới khi biết tỉ lệ thật */
   margin-right: calc(-1 * var(--blend));
   overflow: hidden;
-  background: #2A231F;
   /* Mép trái mờ dần theo đường cong mềm, đè lên mép phải của ảnh trước */
   --fade: linear-gradient(to right,
     transparent 0,

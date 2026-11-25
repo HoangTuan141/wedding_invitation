@@ -1146,6 +1146,52 @@ body.is-opened .hero__in { opacity: 1; transform: none; }
    9. MỪNG CƯỚI
    ===================================================================== */
 .gift { background: var(--paper); }
+/* Đầu mục mừng cưới: nhãn tim + đường kẻ có tim + nút "Hiện mã QR" */
+.sec-head--gift::after { display: none; }
+.sec-head--gift { margin-bottom: 0; }
+.gift__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 16px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+}
+.gift__badge svg { width: 12px; height: 12px; }
+.gift__divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 20px auto 4px;
+  color: var(--accent);
+}
+.gift__divider::before,
+.gift__divider::after { content: ''; width: 64px; height: 1px; }
+.gift__divider::before { background: linear-gradient(to right, transparent, var(--accent-2)); }
+.gift__divider::after { background: linear-gradient(to left, transparent, var(--accent-2)); }
+.gift__divider svg { width: 16px; height: 16px; }
+.gift__toggle { margin-top: 34px; padding-inline: 34px; box-shadow: 0 14px 28px -14px rgba(44, 38, 34, .55); }
+.gift__toggle .ico-eye-off,
+.gift__toggle.is-open .ico-eye { display: none; }
+.gift__toggle.is-open .ico-eye-off { display: block; }
+/* Khung chứa mã QR: mở ra / thu lại mềm mại */
+.gift__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows .7s var(--ease), opacity .5s ease;
+}
+.gift__panel > .gift__grid { min-height: 0; overflow: hidden; transition: padding .7s var(--ease); }
+.gift__panel.is-open { grid-template-rows: 1fr; opacity: 1; }
+.gift__panel.is-open > .gift__grid { padding-top: 40px; padding-bottom: 30px; }
+/* Mở xong thì bỏ che phần thừa để bóng đổ của thẻ hiện đầy đủ */
+.gift__panel.is-shown > .gift__grid { overflow: visible; }
 .gift .card { background: var(--bg); }
 .gift__grid { display: grid; grid-template-columns: minmax(0, 400px); justify-content: center; gap: 28px; }
 .gift-card { text-align: center; }

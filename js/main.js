@@ -618,6 +618,28 @@
     toastTimer = setTimeout(() => toastEl.classList.remove('is-show'), 3000);
   };
 
+  // Mừng cưới: bấm "Hiện mã QR" mới mở khung mã QR + số tài khoản
+  const giftToggle = $('#giftToggle');
+  const giftPanel = $('#giftPanel');
+  if (giftToggle && giftPanel) {
+    giftToggle.addEventListener('click', () => {
+      const open = !giftPanel.classList.contains('is-open');
+      giftPanel.classList.toggle('is-open', open);
+      giftPanel.classList.remove('is-shown');
+      giftPanel.inert = !open;
+      giftToggle.classList.toggle('is-open', open);
+      giftToggle.setAttribute('aria-expanded', String(open));
+      $('.gift__toggle-label', giftToggle).textContent = open ? 'Ẩn mã QR' : 'Hiện mã QR';
+      // Mở ra thì cuộn nhẹ để thấy trọn mã QR
+      if (open) setTimeout(() => $('.gift-card', giftPanel).scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' }), 450);
+    });
+    giftPanel.addEventListener('transitionend', (e) => {
+      if (e.target === giftPanel && e.propertyName === 'grid-template-rows' && giftPanel.classList.contains('is-open')) {
+        giftPanel.classList.add('is-shown');
+      }
+    });
+  }
+
   $$('[data-copy]').forEach((btn) => {
     btn.addEventListener('click', async () => {
       const text = String(get(btn.dataset.copy));

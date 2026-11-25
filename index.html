@@ -33,8 +33,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Great+Vibes&display=swap" rel="stylesheet" />
-  <!-- ?v=17: đổi số này mỗi khi sửa CSS/JS để trình duyệt khách không dùng bản cũ trong cache -->
-  <link rel="stylesheet" href="css/style.css?v=17" />
+  <!-- ?v=18: đổi số này mỗi khi sửa CSS/JS để trình duyệt khách không dùng bản cũ trong cache -->
+  <link rel="stylesheet" href="css/style.css?v=18" />
 </head>
 
 <body class="is-locked">
@@ -454,14 +454,20 @@
          ============================================================= -->
     <section class="section gift" id="gift">
       <div class="container">
-        <header class="sec-head reveal">
-          <p class="eyebrow">Wedding Gift</p>
-          <h2 class="sec-title">Hộp <em>mừng cưới</em></h2>
-          <p class="sec-sub">Sự hiện diện của bạn là món quà ý nghĩa nhất với chúng mình.<br />Nếu không thể đến chung vui, bạn có thể gửi lời chúc qua đây.</p>
+        <!-- Mã QR ẩn sẵn, khách bấm "Hiện mã QR" mới mở ra (đỡ lộ liễu) -->
+        <header class="sec-head sec-head--gift reveal">
+          <p class="gift__badge"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 20.5s-7.6-4.6-9.6-9.2A5.4 5.4 0 0 1 12 6.2a5.4 5.4 0 0 1 9.6 5.1c-2 4.6-9.6 9.2-9.6 9.2z"/></svg> Mừng cưới</p>
+          <h2 class="sec-title">Thay cho <em>lời cảm ơn</em></h2>
+          <div class="gift__divider" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 20.5s-7.6-4.6-9.6-9.2A5.4 5.4 0 0 1 12 6.2a5.4 5.4 0 0 1 9.6 5.1c-2 4.6-9.6 9.2-9.6 9.2z"/></svg></div>
+          <p class="sec-sub">Sự hiện diện của bạn là món quà quý giá nhất với <span data-cfg="guestLineWe">chúng mình</span>.<br />Nếu muốn gửi lời chúc mừng, bạn có thể quét mã QR bên dưới.</p>
+          <button class="btn btn--solid gift__toggle" id="giftToggle" type="button" aria-expanded="false" aria-controls="giftPanel">
+            <svg class="ico-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg><svg class="ico-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5c1.6 0 3 .4 4.2 1M21.5 12S18 18.5 12 18.5c-1.6 0-3-.4-4.2-1"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2M3.5 3.5l17 17"/></svg><span class="gift__toggle-label">Hiện mã QR</span>
+          </button>
         </header>
 
+        <div class="gift__panel" id="giftPanel" inert>
         <div class="gift__grid">
-          <article class="card gift-card reveal">
+          <article class="card gift-card">
             <p class="eyebrow">Mừng cưới chúng mình</p>
             <div class="qr" data-ph>
               <!-- 📷 Ảnh QR lấy từ config.js → bank.bride.qr / bank.groom.qr (link nhà gái: cô dâu,
@@ -478,6 +484,7 @@
               Sao chép số TK
             </button>
           </article>
+        </div>
         </div>
       </div>
     </section>
@@ -537,7 +544,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="js/config.js?v=17"></script>
-  <script src="js/main.js?v=17"></script>
+  <script src="js/config.js?v=18"></script>
+  <script src="js/main.js?v=18"></script>
 </body>
 </html>
